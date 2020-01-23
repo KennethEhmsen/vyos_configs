@@ -1,0 +1,90 @@
+#!/bin/vbash
+source /opt/vyatta/etc/functions/script-template
+configure
+set interfaces ethernet eth0 address dhcp
+set interfaces ethernet eth0 description "WAN"
+set interfaces ethernet eth0 speed auto
+set interfaces ethernet eth0 duplex auto
+set interfaces ethernet eth1 address 10.1.101.1/24
+set interfaces ethernet eth1 description "LAN"
+set interfaces ethernet eth1 speed auto
+set interfaces ethernet eth1 duplex auto
+set service ssh port 22
+set service ssh listen-address 10.1.101.1
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 default-router 10.1.101.1
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 dns-server 10.1.101.20
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 dns-server 10.1.101.1
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 domain-name blue.neccdl.org
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 lease 86400
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 range 0 start 10.1.101.200
+set service dhcp-server shared-network-name LAN subnet 10.1.101.0/24 range 0 stop 10.1.101.250
+set service dns forwarding cache-size 150
+set service dns forwarding listen-address 10.1.101.1
+set service dns forwarding allow-from 10.1.101.0/24
+set firewall name WAN-IN default-action drop
+set firewall name WAN-IN rule 10 action accept
+set firewall name WAN-IN rule 10 source port 80
+set firewall name WAN-IN rule 10 protocol tcp
+set firewall name WAN-IN rule 10 state established enable
+set firewall name WAN-IN rule 10 state related enable
+set firewall name WAN-IN rule 20 action accept
+set firewall name WAN-IN rule 20 source port 443
+set firewall name WAN-IN rule 20 protocol tcp
+set firewall name WAN-IN rule 20 state established enable
+set firewall name WAN-IN rule 20 state related enable
+set firewall name WAN-IN rule 30 action accept
+set firewall name WAN-IN rule 30 source port 53
+set firewall name WAN-IN rule 30 protocol tcp
+set firewall name WAN-IN rule 30 state established enable
+set firewall name WAN-IN rule 30 state related enable
+set firewall name WAN-IN rule 40 action accept
+set firewall name WAN-IN rule 40 source port 53
+set firewall name WAN-IN rule 40 protocol udp
+set firewall name WAN-IN rule 40 state established enable
+set firewall name WAN-IN rule 40 state related enable
+set firewall name WAN-IN rule 50 action accept
+set firewall name WAN-IN rule 50 source port 123
+set firewall name WAN-IN rule 50 protocol udp
+set firewall name WAN-IN rule 50 state established enable
+set firewall name WAN-IN rule 50 state related enable
+set firewall name WAN-LOCAL default-action drop
+set firewall name WAN-LOCAL rule 10 action accept
+set firewall name WAN-LOCAL rule 10 source port 80
+set firewall name WAN-LOCAL rule 10 protocol tcp
+set firewall name WAN-LOCAL rule 10 state established enable
+set firewall name WAN-LOCAL rule 10 state related enable
+set firewall name WAN-LOCAL rule 20 action accept
+set firewall name WAN-LOCAL rule 20 source port 443
+set firewall name WAN-LOCAL rule 20 protocol tcp
+set firewall name WAN-LOCAL rule 20 state established enable
+set firewall name WAN-LOCAL rule 20 state related enable
+set firewall name WAN-LOCAL rule 30 action accept
+set firewall name WAN-LOCAL rule 30 source port 53
+set firewall name WAN-LOCAL rule 30 protocol tcp
+set firewall name WAN-LOCAL rule 30 state established enable
+set firewall name WAN-LOCAL rule 30 state related enable
+set firewall name WAN-LOCAL rule 40 action accept
+set firewall name WAN-LOCAL rule 40 source port 53
+set firewall name WAN-LOCAL rule 40 protocol udp
+set firewall name WAN-LOCAL rule 40 state established enable
+set firewall name WAN-LOCAL rule 40 state related enable
+set firewall name WAN-LOCAL rule 50 action accept
+set firewall name WAN-LOCAL rule 50 source port 123
+set firewall name WAN-LOCAL rule 50 protocol udp
+set firewall name WAN-LOCAL rule 50 state established enable
+set firewall name WAN-LOCAL rule 50 state related enable
+set firewall name WAN-LOCAL rule 60 action accept
+set firewall name WAN-LOCAL rule 60 icmp type-name echo-request
+set firewall name WAN-LOCAL rule 60 protocol icmp
+set firewall name WAN-LOCAL rule 60 state new enable
+set interfaces ethernet eth0 firewall in name WAN-IN
+set interfaces ethernet eth0 firewall local name WAN-LOCAL
+set system config-managment commit-revisions 20
+set system login user sadmin level admin
+set system login user sadmin authentication plaintext-password supersecurepas
+set system host-name canine-blue1
+set system name-server <>
+set system time-zone UTC
+set protocols static route 0.0.0.0/0 next-hop <>
+commit
+exit
