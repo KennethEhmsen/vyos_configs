@@ -79,7 +79,6 @@ set firewall name WAN-LOCAL rule 60 icmp type-name echo-request
 set firewall name WAN-LOCAL rule 60 state new enable
 set interfaces ethernet eth0 firewall in name WAN-IN
 set interfaces ethernet eth0 firewall local name WAN-LOCAL
-set system config-managment commit-revisions 20
 set system login user sadmin level admin
 set system login user sadmin authentication plaintext-password supersecurepas
 set system host-name canine-blue1
