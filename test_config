@@ -74,8 +74,8 @@ set firewall name WAN-LOCAL rule 50 protocol udp
 set firewall name WAN-LOCAL rule 50 state established enable
 set firewall name WAN-LOCAL rule 50 state related enable
 set firewall name WAN-LOCAL rule 60 action accept
-set firewall name WAN-LOCAL rule 60 icmp type-name echo-request
 set firewall name WAN-LOCAL rule 60 protocol icmp
+set firewall name WAN-LOCAL rule 60 icmp type-name echo-request
 set firewall name WAN-LOCAL rule 60 state new enable
 set interfaces ethernet eth0 firewall in name WAN-IN
 set interfaces ethernet eth0 firewall local name WAN-LOCAL
